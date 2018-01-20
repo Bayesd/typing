@@ -3,11 +3,13 @@ Typing practice. Useful if you have a programmable keyboard
 and want to establish muscle memory after remapping keys
 
 @author: Russ Winch
-@version: Jan 2018'''
+@version: Jan 2018
+'''
 
 import random
 import curses
 
+''' executes a round of practice '''
 def practice(w, k, r, m):
     w.addstr("\t{message}\nround {round_no}.\t{key} : ".format(message=m,
         round_no=r, key=k))
@@ -17,9 +19,11 @@ def practice(w, k, r, m):
         return True
     return False
 
-# selects a new key from the pool
+
+''' selects a new key from the pool '''
 def new_key(l):
     return l[random.randrange(len(l))]
+
 
 def main():
     rounds_default = 10
@@ -46,6 +50,7 @@ def main():
     # time to practice!
     try:
         win = curses.initscr()
+        # next 2 lines allow scrolling, otherwise an error occurs
         win.scrollok(True)
         win.idlok(1)
         win.addstr("let's practice {keys} for {rounds} rounds".format(keys=keys,
@@ -70,6 +75,7 @@ def main():
     else:
         s = 's'
     print("you made {i} mistake{s}".format(i=incorrect, s=s))
+
 
 if __name__ == "__main__":
     main()
