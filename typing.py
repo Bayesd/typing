@@ -1,32 +1,37 @@
-'''
-Typing practice. Useful if you have a programmable keyboard
-and want to establish muscle memory after remapping keys
+"""
+Typing practice. 
+
+Useful if you have a programmable keyboard
+and want to establish muscle memory after remapping keys.
 
 @author: Russ Winch
 @version: Jan 2018
-'''
+"""
 
 import random
 import curses
 
-''' executes a round of practice '''
-def practice(w, k, r, m):
-    w.addstr("\t{message}\nround {round_no}.\t{key} : ".format(message=m,
-        round_no=r, key=k))
-    result = w.getkey()
+def practice(window, key, round_no, message):
+    """Executes a round of practice.
 
-    if result == k:
+    Returns True if correct and False if incorrect
+    """
+    window.addstr("\t{message}\nround {round_no}.\t{key} :".format(
+        message=message, round_no=round_no, key=key))
+    result = window.getkey()
+
+    if result == key:
         return True
     return False
 
 
-''' selects a new key from the pool '''
-def new_key(l):
-    return l[random.randrange(len(l))]
+def new_key(key_list):
+    """Returns a new key from the pool."""
+    return key_list[random.randrange(len(key_list))]
 
 
 def main():
-    rounds_default = 10
+    rounds_default = 20
 
     keys = None
     while not keys:
@@ -70,12 +75,15 @@ def main():
         curses.endwin() # without this bad things happen to the terminal
 
     # results
-    if incorrect == 1:
-        s = ''
-    else:
-        s = 's'
+    s = '' if incorrect == 1 else 's'
     print("you made {i} mistake{s}".format(i=incorrect, s=s))
 
 
 if __name__ == "__main__":
-    main()
+    practicing = True
+
+    while practicing == True:
+        main()
+        again = input("go again? y/[n] : ")
+        if again != 'y':
+            practicing = False
